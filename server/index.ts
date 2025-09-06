@@ -3,6 +3,8 @@ import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
 import { handleChat } from "./routes/chat";
+import { getEvents } from "./routes/events";
+import { getTasks } from "./routes/tasks";
 
 export function createServer() {
   const app = express();
@@ -20,6 +22,8 @@ export function createServer() {
 
   app.get("/api/demo", handleDemo);
   app.post("/api/chat", handleChat);
+  app.get("/api/events", getEvents);
+  app.get("/api/tasks", getTasks);
 
   return app;
 }
