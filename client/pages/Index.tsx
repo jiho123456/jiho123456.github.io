@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
+import AppShell from "@/components/AppShell";
 import type { EventsResponse, EventItem, TasksResponse, TaskItem } from "@shared/api";
 
 function Toast({ message, type, onClose }: { message: string; type: "success" | "error"; onClose: () => void }) {
@@ -48,7 +49,7 @@ function AuthView({ onSignedIn }: { onSignedIn: () => void }) {
   async function handleSignup(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!supabase) {
-      setToast({ message: "Supabase가 설정되지 않았습니다. 환경변수 VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY를 설정하세요.", type: "error" });
+      setToast({ message: "Supabase가 설정되지 않았습니��. 환경변수 VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY를 설정하세요.", type: "error" });
       return;
     }
     const form = new FormData(e.currentTarget);
@@ -98,7 +99,7 @@ function AuthView({ onSignedIn }: { onSignedIn: () => void }) {
               </div>
               <button type="submit" disabled={!supaAvailable || loading} className="w-full bg-primary text-white py-2 rounded-button font-medium disabled:opacity-50">{loading ? "처리 중..." : "로그인"}</button>
               {!supaAvailable && (
-                <p className="text-xs text-red-600">환��변수 VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY가 설정되지 않았습니다.</p>
+                <p className="text-xs text-red-600">환경변수 VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY가 설정되지 않았습니다.</p>
               )}
             </form>
           ) : (
@@ -124,7 +125,19 @@ function AuthView({ onSignedIn }: { onSignedIn: () => void }) {
           )}
         </div>
         <div className="mt-4 text-center">
-          <a className="text-primary text-sm" href="#">비밀번호를 잊으셨나요?</a>
+          <button
+            className="text-primary text-sm"
+            onClick={async () => {
+              const emailInput = document.querySelector<HTMLInputElement>('input[name="email"]');
+              const email = emailInput?.value || "";
+              if (!email) return alert("이메일을 입력해 주세요");
+              if (!supabase) return alert("Supabase 설정 필요");
+              await supabase.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin });
+              alert("비밀번호 재설정 이메일을 보냈습니다.");
+            }}
+          >
+            비밀번호를 잊으셨나요?
+          </button>
         </div>
       </div>
     </div>
@@ -165,7 +178,7 @@ function DashboardView({ userName }: { userName: string }) {
         body: JSON.stringify({ message, context: { date: new Date().toISOString() } }),
       });
       const data = await res.json();
-      setChat(prev => [...prev, { from: "bot", text: data.response || "지금은 연결에 문제가 있어요. 잠�� 후 다시 시도해 주세요." }]);
+      setChat(prev => [...prev, { from: "bot", text: data.response || "지금은 연결에 문제가 있어요. 잠시 후 다시 시도해 주세요." }]);
     } catch (e) {
       setChat(prev => [...prev, { from: "bot", text: "지금은 연결에 문제가 있어요. 잠시 후 다시 시도해 주세요." }]);
     } finally {
@@ -174,24 +187,7 @@ function DashboardView({ userName }: { userName: string }) {
   }
 
   return (
-    <div className="flex flex-col h-screen">
-      <main className="flex-1 overflow-y-auto pb-16">
-        <header className="bg-white shadow-sm">
-          <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <div className="flex items-center">
-              <h1 className="text-2xl font-[Pacifico] text-primary">My Schedule Mate</h1>
-            </div>
-            <div className="flex items-center space-x-4">
-              <button className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100">
-                <i className="ri-notification-3-line text-gray-600" />
-              </button>
-              <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-semibold">
-                {userName?.[0]?.toUpperCase() || "U"}
-              </div>
-            </div>
-          </div>
-        </header>
-
+    <AppShell userName={userName}>
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
             <div className="flex flex-col md:flex-row md:items-center justify-between">
@@ -428,50 +424,14 @@ function DashboardView({ userName }: { userName: string }) {
             </div>
           </div>
         </div>
-      </main>
-
-      <nav className="fixed bottom-0 w-full bg-white border-t border-gray-200 shadow-lg animate-fade-in" style={{ animationDelay: "0.3s" }}>
-        <div className="flex justify-around items-center h-16">
-          <a href="#" className="flex flex-col items-center justify-center text-primary">
-            <div className="w-6 h-6 flex items-center justify-center">
-              <i className="ri-home-5-fill" />
-            </div>
-            <span className="text-xs mt-1">홈</span>
-          </a>
-          <a href="#" className="flex flex-col items-center justify-center text-gray-500">
-            <div className="w-6 h-6 flex items-center justify-center">
-              <i className="ri-calendar-line" />
-            </div>
-            <span className="text-xs mt-1">캘린더</span>
-          </a>
-          <a href="#" className="flex flex-col items-center justify-center text-gray-500">
-            <div className="w-6 h-6 flex items-center justify-center">
-              <i className="ri-task-line" />
-            </div>
-            <span className="text-xs mt-1">할 일</span>
-          </a>
-          <a href="#" className="flex flex-col items-center justify-center text-gray-500">
-            <div className="w-6 h-6 flex items-center justify-center">
-              <i className="ri-message-3-line" />
-            </div>
-            <span className="text-xs mt-1">채팅</span>
-          </a>
-          <a href="#" className="flex flex-col items-center justify-center text-gray-500">
-            <div className="w-6 h-6 flex items-center justify-center">
-              <i className="ri-user-line" />
-            </div>
-            <span className="text-xs mt-1">프로필</span>
-          </a>
-        </div>
-      </nav>
-    </div>
+    </AppShell>
   );
 }
 
 export default function Index() {
   const [sessionChecked, setSessionChecked] = useState(false);
   const [signedIn, setSignedIn] = useState(false);
-  const [userName, setUserName] = useState("���용자");
+  const [userName, setUserName] = useState("사용자");
 
   useEffect(() => {
     let mounted = true;
