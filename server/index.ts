@@ -4,7 +4,7 @@ import cors from "cors";
 import { handleDemo } from "./routes/demo";
 import { handleChat } from "./routes/chat";
 import { getEvents, createEvent, updateEvent, deleteEvent } from "./routes/events";
-import { getTasks } from "./routes/tasks";
+import { getTasks, createTask, updateTask, deleteTask } from "./routes/tasks";
 
 export function createServer() {
   const app = express();
@@ -28,6 +28,9 @@ export function createServer() {
   app.delete("/api/events/:id", deleteEvent);
 
   app.get("/api/tasks", getTasks);
+  app.post("/api/tasks", createTask);
+  app.put("/api/tasks/:id", updateTask);
+  app.delete("/api/tasks/:id", deleteTask);
 
   return app;
 }
