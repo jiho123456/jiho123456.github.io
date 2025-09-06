@@ -111,6 +111,8 @@
 
 /* Utilities */
 .rounded-button { border-radius: 8px; }
+.rounded-l-button { border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
+.rounded-r-button { border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
 
 /* Custom checkbox */
 .custom-checkbox { position: relative; display: inline-block; width: 20px; height: 20px; }
