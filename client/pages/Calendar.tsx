@@ -101,6 +101,13 @@ export default function Calendar() {
   const [modal, setModal] = useState<{ open: boolean; initial?: Partial<EventItem> }>({ open: false });
   const qc = useQueryClient();
 
+  useEffect(() => {
+    const sp = new URLSearchParams(window.location.search);
+    const v = sp.get('view');
+    if (v === 'month' || v === 'week' || v === 'day') setView(v);
+    if (sp.get('create') === '1') setModal({ open: true, initial: { start_time: new Date().toISOString().slice(0,16), end_time: new Date(Date.now()+60*60*1000).toISOString().slice(0,16) } });
+  }, []);
+
   const range = useMemo(() => {
     if (view === "month") {
       return { from: startOfWeek(startOfMonth(cursor)), to: endOfWeek(endOfMonth(cursor)) };
