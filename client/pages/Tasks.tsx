@@ -85,6 +85,7 @@ export default function Tasks() {
   const tasks: TaskItem[] = data?.tasks ?? [];
 
   const [modal, setModal] = useState<{ open: boolean; initial?: Partial<TaskItem> }>({ open: false });
+  useEffect(() => { if (new URLSearchParams(window.location.search).get('create') === '1') setModal({ open: true }); }, []);
 
   const createMut = useMutation({
     mutationFn: async (payload: Partial<TaskItem>) => (await (await fetch("/api/tasks", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) })).json()),
