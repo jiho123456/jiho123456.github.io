@@ -3,7 +3,7 @@ import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
 import { handleChat } from "./routes/chat";
-import { getEvents } from "./routes/events";
+import { getEvents, createEvent, updateEvent, deleteEvent } from "./routes/events";
 import { getTasks } from "./routes/tasks";
 
 export function createServer() {
@@ -23,6 +23,10 @@ export function createServer() {
   app.get("/api/demo", handleDemo);
   app.post("/api/chat", handleChat);
   app.get("/api/events", getEvents);
+  app.post("/api/events", createEvent);
+  app.put("/api/events/:id", updateEvent);
+  app.delete("/api/events/:id", deleteEvent);
+
   app.get("/api/tasks", getTasks);
 
   return app;
