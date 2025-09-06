@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import AppShell from "@/components/AppShell";
+import { useNavigate } from "react-router-dom";
 import type { EventsResponse, EventItem, TasksResponse, TaskItem } from "@shared/api";
 
 function Toast({ message, type, onClose }: { message: string; type: "success" | "error"; onClose: () => void }) {
@@ -157,6 +158,8 @@ function DashboardView({ userName }: { userName: string }) {
   const [chatInput, setChatInput] = useState("");
   const [chat, setChat] = useState<{ from: "user" | "bot"; text: string }[]>([]);
   const [sending, setSending] = useState(false);
+  const navigate = useNavigate();
+  const qc = useQueryClient();
 
   const { data: eventsData } = useQuery({ queryKey: ["events"], queryFn: async () => (await (await fetch("/api/events")).json()) as EventsResponse });
   const { data: tasksData } = useQuery({ queryKey: ["tasks"], queryFn: async () => (await (await fetch("/api/tasks")).json()) as TasksResponse });
@@ -233,22 +236,22 @@ function DashboardView({ userName }: { userName: string }) {
                 <div className="flex items-center space-x-4">
                   <h3 className="text-lg font-bold">일정</h3>
                   <div className="flex bg-gray-100 rounded-full p-1">
-                    <button className="px-3 py-1 text-sm font-medium rounded-full bg-white shadow-sm text-gray-800 whitespace-nowrap">일</button>
-                    <button className="px-3 py-1 text-sm font-medium rounded-full text-gray-600 hover:bg-white/50 whitespace-nowrap">주</button>
-                    <button className="px-3 py-1 text-sm font-medium rounded-full text-gray-600 hover:bg-white/50 whitespace-nowrap">월</button>
+                    <button onClick={() => navigate('/calendar?view=day')} className="px-3 py-1 text-sm font-medium rounded-full bg-white shadow-sm text-gray-800 whitespace-nowrap">일</button>
+                    <button onClick={() => navigate('/calendar?view=week')} className="px-3 py-1 text-sm font-medium rounded-full text-gray-600 hover:bg-white/50 whitespace-nowrap">주</button>
+                    <button onClick={() => navigate('/calendar?view=month')} className="px-3 py-1 text-sm font-medium rounded-full text-gray-600 hover:bg-white/50 whitespace-nowrap">월</button>
                   </div>
                 </div>
                 <div className="flex items-center space-x-3">
                   <div className="flex space-x-1">
-                    <button className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100">
+                    <button onClick={() => navigate('/calendar')} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100">
                       <i className="ri-arrow-left-s-line text-gray-600" />
                     </button>
-                    <button className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100">
+                    <button onClick={() => navigate('/calendar')} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100">
                       <i className="ri-arrow-right-s-line text-gray-600" />
                     </button>
                   </div>
-                  <button className="px-3 py-1.5 text-sm font-medium hover:bg-gray-100 rounded-button">오늘</button>
-                  <button className="flex items-center justify-center space-x-1 bg-primary text-white px-3 py-1.5 font-medium rounded-button">
+                  <button onClick={() => navigate('/calendar')} className="px-3 py-1.5 text-sm font-medium hover:bg-gray-100 rounded-button">오늘</button>
+                  <button onClick={() => navigate('/calendar?create=1')} className="flex items-center justify-center space-x-1 bg-primary text-white px-3 py-1.5 font-medium rounded-button">
                     <i className="ri-add-line" />
                     <span className="whitespace-nowrap">일정 추가</span>
                   </button>
@@ -293,10 +296,10 @@ function DashboardView({ userName }: { userName: string }) {
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-lg font-bold">다가오는 할 일</h3>
                 <div className="flex space-x-2">
-                  <button className="px-3 py-1.5 bg-gray-100 text-gray-800 rounded-button text-sm whitespace-nowrap">
+                  <button onClick={() => navigate('/tasks')} className="px-3 py-1.5 bg-gray-100 text-gray-800 rounded-button text-sm whitespace-nowrap">
                     <i className="ri-filter-3-line mr-1" /> 필터
                   </button>
-                  <button className="px-3 py-1.5 bg-primary text-white rounded-button text-sm whitespace-nowrap">
+                  <button onClick={() => navigate('/tasks?create=1')} className="px-3 py-1.5 bg-primary text-white rounded-button text-sm whitespace-nowrap">
                     <i className="ri-add-line mr-1" /> 새 할 일
                   </button>
                 </div>
@@ -310,7 +313,7 @@ function DashboardView({ userName }: { userName: string }) {
                   <div key={String(t.id)} className="border border-gray-200 rounded-lg p-4 hover-lift">
                     <div className="flex items-start">
                       <label className="custom-checkbox mt-1 mr-3">
-                        <input type="checkbox" defaultChecked={t.status === "done"} />
+                        <input type="checkbox" checked={t.status === "done"} onChange={async (e) => { await fetch(`/api/tasks/${t.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status: e.target.checked ? 'done' : 'open' }) }); qc.invalidateQueries({ queryKey: ['tasks'] }); }} />
                         <span className="checkmark" />
                       </label>
                       <div className="flex-1">
@@ -331,7 +334,7 @@ function DashboardView({ userName }: { userName: string }) {
               </div>
 
               <div className="mt-4 text-center">
-                <button className="text-primary font-medium whitespace-nowrap">모든 할 일 보기</button>
+                <button onClick={() => navigate('/tasks')} className="text-primary font-medium whitespace-nowrap">모든 할 일 보기</button>
               </div>
             </div>
 
@@ -348,7 +351,7 @@ function DashboardView({ userName }: { userName: string }) {
                     <div>
                       <p className="text-sm">오전 시간대에 집중력이 가장 높습니다. 내일 오전 9시에 수학 연습을 옮겨보세요.</p>
                       <div className="mt-1 flex space-x-2">
-                        <button className="px-2 py-1 bg-blue-500 text-white rounded-button text-xs whitespace-nowrap">적용</button>
+                        <button onClick={() => navigate('/calendar?create=1')} className="px-2 py-1 bg-blue-500 text-white rounded-button text-xs whitespace-nowrap">적용</button>
                         <button className="px-2 py-1 bg-white border border-gray-300 text-gray-700 rounded-button text-xs whitespace-nowrap">무시</button>
                       </div>
                     </div>
@@ -360,7 +363,7 @@ function DashboardView({ userName }: { userName: string }) {
                     <div>
                       <p className="text-sm">내일 16:00 축구 연습과 16:30 수학 학원 일정이 겹칩니다.</p>
                       <div className="mt-1 flex space-x-2">
-                        <button className="px-2 py-1 bg-yellow-500 text-white rounded-button text-xs whitespace-nowrap">해결</button>
+                        <button onClick={() => navigate('/calendar?view=day')} className="px-2 py-1 bg-yellow-500 text-white rounded-button text-xs whitespace-nowrap">해결</button>
                       </div>
                     </div>
                   </div>
@@ -377,7 +380,7 @@ function DashboardView({ userName }: { userName: string }) {
                     <div>
                       <p className="text-sm">오늘 4시간 이상 공부했어요. 30분 휴식을 권장합니다.</p>
                       <div className="mt-1 flex space-x-2">
-                        <button className="px-2 py-1 bg-green-500 text-white rounded-button text-xs whitespace-nowrap">휴식 예약</button>
+                        <button onClick={() => navigate('/calendar?create=1')} className="px-2 py-1 bg-green-500 text-white rounded-button text-xs whitespace-nowrap">휴식 예약</button>
                       </div>
                     </div>
                   </div>
