@@ -62,6 +62,11 @@ export default function Profile() {
         </form>
 
         <div className="bg-white rounded-lg p-4 border space-y-3">
+          <h3 className="font-semibold">Subscription</h3>
+          <PlanSection />
+        </div>
+
+        <div className="bg-white rounded-lg p-4 border space-y-3">
           <h3 className="font-semibold">Danger zone</h3>
           <button onClick={logout} className="bg-red-500 text-white px-4 py-2 rounded-button">Log out</button>
         </div>
