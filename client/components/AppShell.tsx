@@ -25,35 +25,35 @@ export default function AppShell({ userName, children }: { userName: string; chi
 
       <nav className="fixed bottom-0 w-full bg-white border-t border-gray-200 shadow-lg animate-fade-in" style={{ animationDelay: "0.3s" }}>
         <div className="flex justify-around items-center h-16">
-          <NavLink to="/" className={({ isActive }) => `flex flex-col items-center justify-center ${isActive ? "text-primary" : "text-gray-500"}`}>
+          <NavLink to="/app" className={({ isActive }) => `flex flex-col items-center justify-center ${isActive ? "text-primary" : "text-gray-500"}`}>
             <div className="w-6 h-6 flex items-center justify-center">
               <i className="ri-home-5-fill" />
             </div>
-            <span className="text-xs mt-1">홈</span>
+            <span className="text-xs mt-1">Home</span>
           </NavLink>
           <NavLink to="/calendar" className={({ isActive }) => `flex flex-col items-center justify-center ${isActive ? "text-primary" : "text-gray-500"}`}>
             <div className="w-6 h-6 flex items-center justify-center">
               <i className="ri-calendar-line" />
             </div>
-            <span className="text-xs mt-1">캘린더</span>
+            <span className="text-xs mt-1">Calendar</span>
           </NavLink>
           <NavLink to="/tasks" className={({ isActive }) => `flex flex-col items-center justify-center ${isActive ? "text-primary" : "text-gray-500"}`}>
             <div className="w-6 h-6 flex items-center justify-center">
               <i className="ri-task-line" />
             </div>
-            <span className="text-xs mt-1">할 일</span>
+            <span className="text-xs mt-1">Tasks</span>
           </NavLink>
           <NavLink to="/chat" className={({ isActive }) => `flex flex-col items-center justify-center ${isActive ? "text-primary" : "text-gray-500"}`}>
             <div className="w-6 h-6 flex items-center justify-center">
               <i className="ri-message-3-line" />
             </div>
-            <span className="text-xs mt-1">채팅</span>
+            <span className="text-xs mt-1">Chat</span>
           </NavLink>
           <NavLink to="/profile" className={({ isActive }) => `flex flex-col items-center justify-center ${isActive ? "text-primary" : "text-gray-500"}`}>
             <div className="w-6 h-6 flex items-center justify-center">
               <i className="ri-user-line" />
             </div>
-            <span className="text-xs mt-1">프로필</span>
+            <span className="text-xs mt-1">Profile</span>
           </NavLink>
         </div>
       </nav>
