@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
 import { handleChat } from "./routes/chat";
+import { submitEarlyAccess, submitFeedback } from "./routes/early-access";
 import { getEvents, createEvent, updateEvent, deleteEvent } from "./routes/events";
 import { getTasks, createTask, updateTask, deleteTask } from "./routes/tasks";
 
@@ -31,6 +32,9 @@ export function createServer() {
   app.post("/api/tasks", createTask);
   app.put("/api/tasks/:id", updateTask);
   app.delete("/api/tasks/:id", deleteTask);
+
+  app.post("/api/early-access", submitEarlyAccess);
+  app.post("/api/feedback", submitFeedback);
 
   return app;
 }
