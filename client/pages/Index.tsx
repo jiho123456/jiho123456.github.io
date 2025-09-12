@@ -31,7 +31,7 @@ function AuthView({ onSignedIn }: { onSignedIn: () => void }) {
   async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!supabase) {
-      setToast({ message: "Supabase가 설정되지 않았습니다. 환경변수 VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY를 설정하세요.", type: "error" });
+      setToast({ message: "Supabase is not configured. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.", type: "error" });
       return;
     }
     const form = new FormData(e.currentTarget);
@@ -42,7 +42,7 @@ function AuthView({ onSignedIn }: { onSignedIn: () => void }) {
     setLoading(false);
     if (error) setToast({ message: error.message, type: "error" });
     else {
-      setToast({ message: "로그인에 성공했습니다!", type: "success" });
+      setToast({ message: "Logged in successfully!", type: "success" });
       onSignedIn();
     }
   }
@@ -50,7 +50,7 @@ function AuthView({ onSignedIn }: { onSignedIn: () => void }) {
   async function handleSignup(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!supabase) {
-      setToast({ message: "Supabase가 설정되지 않았습니��. 환경변수 VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY를 설정하세요.", type: "error" });
+      setToast({ message: "Supabase is not configured. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.", type: "error" });
       return;
     }
     const form = new FormData(e.currentTarget);
@@ -59,7 +59,7 @@ function AuthView({ onSignedIn }: { onSignedIn: () => void }) {
     const password = String(form.get("password") || "");
     const confirm = String(form.get("confirm") || "");
     if (password !== confirm) {
-      setToast({ message: "비밀번호가 일치하지 않습니다.", type: "error" });
+      setToast({ message: "Passwords do not match.", type: "error" });
       return;
     }
     setLoading(true);
@@ -67,7 +67,7 @@ function AuthView({ onSignedIn }: { onSignedIn: () => void }) {
     setLoading(false);
     if (error) setToast({ message: error.message, type: "error" });
     else {
-      setToast({ message: "계정이 생성되었습니다! 이메일 인증을 완료해 주세요.", type: "success" });
+      setToast({ message: "Account created! Please verify your email.", type: "success" });
       setTab("login");
     }
   }
@@ -78,50 +78,50 @@ function AuthView({ onSignedIn }: { onSignedIn: () => void }) {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-[Pacifico] text-primary mb-2">My Schedule Mate</h1>
-          <p className="text-gray-600">가족의 일정을 똑똑하게 관리하세요</p>
+          <p className="text-gray-600">Manage your family schedules smarter</p>
         </div>
         <div className="bg-white rounded-lg shadow-sm p-8 animate-fade-in">
           <div className="flex justify-center mb-6">
             <div className="inline-flex rounded-full p-1 bg-gray-100">
-              <button onClick={() => setTab("login")} className={`px-4 py-2 rounded-full font-medium ${tab === "login" ? "bg-white shadow-sm text-gray-800" : "text-gray-600"}`}>로그인</button>
-              <button onClick={() => setTab("signup")} className={`px-4 py-2 rounded-full font-medium ${tab === "signup" ? "bg-white shadow-sm text-gray-800" : "text-gray-600"}`}>회원가입</button>
+              <button onClick={() => setTab("login")} className={`px-4 py-2 rounded-full font-medium ${tab === "login" ? "bg-white shadow-sm text-gray-800" : "text-gray-600"}`}>Log in</button>
+              <button onClick={() => setTab("signup")} className={`px-4 py-2 rounded-full font-medium ${tab === "signup" ? "bg-white shadow-sm text-gray-800" : "text-gray-600"}`}>Sign up</button>
             </div>
           </div>
 
           {tab === "login" ? (
             <form onSubmit={handleLogin} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">이메일</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
                 <input name="email" type="email" className="w-full px-4 py-2 border border-gray-300 rounded-button focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required disabled={!supaAvailable || loading} />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">비밀번호</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
                 <input name="password" type="password" className="w-full px-4 py-2 border border-gray-300 rounded-button focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required disabled={!supaAvailable || loading} />
               </div>
-              <button type="submit" disabled={!supaAvailable || loading} className="w-full bg-primary text-white py-2 rounded-button font-medium disabled:opacity-50">{loading ? "처리 중..." : "로그인"}</button>
+              <button type="submit" disabled={!supaAvailable || loading} className="w-full bg-primary text-white py-2 rounded-button font-medium disabled:opacity-50">{loading ? "Processing..." : "Log in"}</button>
               {!supaAvailable && (
-                <p className="text-xs text-red-600">환경변수 VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY가 설정되지 않았습니다.</p>
+                <p className="text-xs text-red-600">Environment variables VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY are not set.</p>
               )}
             </form>
           ) : (
             <form onSubmit={handleSignup} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">이름</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
                 <input name="name" type="text" className="w-full px-4 py-2 border border-gray-300 rounded-button focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required disabled={!supaAvailable || loading} />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">이메일</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
                 <input name="email" type="email" className="w-full px-4 py-2 border border-gray-300 rounded-button focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required disabled={!supaAvailable || loading} />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">비밀번호</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
                 <input name="password" type="password" className="w-full px-4 py-2 border border-gray-300 rounded-button focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required disabled={!supaAvailable || loading} />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">비밀번호 확인</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Confirm password</label>
                 <input name="confirm" type="password" className="w-full px-4 py-2 border border-gray-300 rounded-button focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required disabled={!supaAvailable || loading} />
               </div>
-              <button type="submit" disabled={!supaAvailable || loading} className="w-full bg-primary text-white py-2 rounded-button font-medium disabled:opacity-50">{loading ? "처리 중..." : "회원가입"}</button>
+              <button type="submit" disabled={!supaAvailable || loading} className="w-full bg-primary text-white py-2 rounded-button font-medium disabled:opacity-50">{loading ? "Processing..." : "Sign up"}</button>
             </form>
           )}
         </div>
@@ -131,13 +131,13 @@ function AuthView({ onSignedIn }: { onSignedIn: () => void }) {
             onClick={async () => {
               const emailInput = document.querySelector<HTMLInputElement>('input[name="email"]');
               const email = emailInput?.value || "";
-              if (!email) return alert("이메일을 입력해 주세요");
-              if (!supabase) return alert("Supabase 설정 필요");
+              if (!email) return alert("Please enter your email");
+              if (!supabase) return alert("Supabase configuration required");
               await supabase.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin });
-              alert("비밀번호 재설정 이메일을 보냈습니다.");
+              alert("Password reset email sent.");
             }}
           >
-            비밀번호를 잊으셨나요?
+            Forgot your password?
           </button>
         </div>
       </div>
@@ -181,9 +181,9 @@ function DashboardView({ userName }: { userName: string }) {
         body: JSON.stringify({ message, context: { date: new Date().toISOString() } }),
       });
       const data = await res.json();
-      setChat(prev => [...prev, { from: "bot", text: data.response || "지금은 연결에 문제가 있어요. 잠시 후 다시 시도해 주세요." }]);
+      setChat(prev => [...prev, { from: "bot", text: data.response || "We're having trouble right now. Please try again later." }]);
     } catch (e) {
-      setChat(prev => [...prev, { from: "bot", text: "지금은 연결에 문제가 있어요. 잠시 후 다시 시도해 주세요." }]);
+      setChat(prev => [...prev, { from: "bot", text: "We're having trouble right now. Please try again later." }]);
     } finally {
       setSending(false);
     }
@@ -199,13 +199,13 @@ function DashboardView({ userName }: { userName: string }) {
                   {userName?.[0]?.toUpperCase() || "U"}
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold">안녕하세요, {userName || "사용자"}님!</h2>
-                  <p className="text-gray-600">{new Date().toLocaleDateString("ko-KR", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}</p>
+                  <h2 className="text-xl font-bold">Hello, {userName || "User"}!</h2>
+                  <p className="text-gray-600">{new Date().toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}</p>
                 </div>
               </div>
               <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6">
                 <div className="flex flex-col">
-                  <span className="text-sm text-gray-600 mb-1">오늘 기분은 어떤가요?</span>
+                  <span className="text-sm text-gray-600 mb-1">How are you feeling today?</span>
                   <div className="flex space-x-2">
                     {moods.map((m) => (
                       <button key={m} onClick={() => setMood(m)} className={`w-10 h-10 flex items-center justify-center rounded-full transition ${mood === m ? "bg-primary text-white" : "bg-gray-100 hover:bg-gray-200"}`}>
@@ -215,7 +215,7 @@ function DashboardView({ userName }: { userName: string }) {
                   </div>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-sm text-gray-600 mb-1">에너지 레벨</span>
+                  <span className="text-sm text-gray-600 mb-1">Energy level</span>
                   <div className="flex items-center space-x-2">
                     <div className="w-8 h-8 flex items-center justify-center">
                       <i className="ri-battery-low-line text-red-500 text-xl" />
@@ -234,11 +234,11 @@ function DashboardView({ userName }: { userName: string }) {
             <div className="lg:col-span-2 bg-white rounded-lg shadow-sm p-6">
               <div className="flex justify-between items-center mb-6">
                 <div className="flex items-center space-x-4">
-                  <h3 className="text-lg font-bold">일정</h3>
+                  <h3 className="text-lg font-bold">Schedule</h3>
                   <div className="flex bg-gray-100 rounded-full p-1">
-                    <button onClick={() => navigate('/calendar?view=day')} className="px-3 py-1 text-sm font-medium rounded-full bg-white shadow-sm text-gray-800 whitespace-nowrap">일</button>
-                    <button onClick={() => navigate('/calendar?view=week')} className="px-3 py-1 text-sm font-medium rounded-full text-gray-600 hover:bg-white/50 whitespace-nowrap">주</button>
-                    <button onClick={() => navigate('/calendar?view=month')} className="px-3 py-1 text-sm font-medium rounded-full text-gray-600 hover:bg-white/50 whitespace-nowrap">월</button>
+                    <button onClick={() => navigate('/calendar?view=day')} className="px-3 py-1 text-sm font-medium rounded-full bg-white shadow-sm text-gray-800 whitespace-nowrap">Day</button>
+                    <button onClick={() => navigate('/calendar?view=week')} className="px-3 py-1 text-sm font-medium rounded-full text-gray-600 hover:bg-white/50 whitespace-nowrap">Week</button>
+                    <button onClick={() => navigate('/calendar?view=month')} className="px-3 py-1 text-sm font-medium rounded-full text-gray-600 hover:bg-white/50 whitespace-nowrap">Month</button>
                   </div>
                 </div>
                 <div className="flex items-center space-x-3">
@@ -250,22 +250,22 @@ function DashboardView({ userName }: { userName: string }) {
                       <i className="ri-arrow-right-s-line text-gray-600" />
                     </button>
                   </div>
-                  <button onClick={() => navigate('/calendar')} className="px-3 py-1.5 text-sm font-medium hover:bg-gray-100 rounded-button">오늘</button>
+                  <button onClick={() => navigate('/calendar')} className="px-3 py-1.5 text-sm font-medium hover:bg-gray-100 rounded-button">Today</button>
                   <button onClick={() => navigate('/calendar?create=1')} className="flex items-center justify-center space-x-1 bg-primary text-white px-3 py-1.5 font-medium rounded-button">
                     <i className="ri-add-line" />
-                    <span className="whitespace-nowrap">일정 추가</span>
+                    <span className="whitespace-nowrap">Add event</span>
                   </button>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 gap-2">
                 {events.length === 0 && (
-                  <div className="text-sm text-gray-500 p-4 bg-gray-50 rounded-lg">표시할 일정이 없습니다. 일정을 추가해 보세요.</div>
+                  <div className="text-sm text-gray-500 p-4 bg-gray-50 rounded-lg">No events to show. Add one!</div>
                 )}
                 {events.map((ev) => {
                   const start = ev.start_time ? new Date(ev.start_time) : null;
                   const end = ev.end_time ? new Date(ev.end_time) : null;
-                  const timeLabel = start ? start.toLocaleTimeString("ko-KR", { hour: "numeric", minute: "2-digit" }) : "";
+                  const timeLabel = start ? start.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" }) : "";
                   return (
                     <div key={String(ev.id)} className="flex items-center py-2 px-3 border-l-4 border-primary bg-white rounded-r-lg">
                       <div className="w-24 text-sm font-medium text-gray-500">{timeLabel}</div>
@@ -275,7 +275,7 @@ function DashboardView({ userName }: { userName: string }) {
                         <div className="flex items-center gap-2 mt-1">
                           {ev.category && <span className="px-2 py-0.5 bg-gray-100 text-gray-800 text-xs rounded-full">{ev.category}</span>}
                           {start && end && (
-                            <span className="text-xs text-gray-500">{Math.max(0, Math.round((end.getTime()-start.getTime())/60000))}분</span>
+                            <span className="text-xs text-gray-500">{Math.max(0, Math.round((end.getTime()-start.getTime())/60000))} min</span>
                           )}
                         </div>
                       </div>
@@ -294,20 +294,20 @@ function DashboardView({ userName }: { userName: string }) {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             <div className="bg-white rounded-lg shadow-sm p-6">
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-lg font-bold">다가오는 할 일</h3>
+                <h3 className="text-lg font-bold">Upcoming tasks</h3>
                 <div className="flex space-x-2">
                   <button onClick={() => navigate('/tasks')} className="px-3 py-1.5 bg-gray-100 text-gray-800 rounded-button text-sm whitespace-nowrap">
-                    <i className="ri-filter-3-line mr-1" /> 필터
+                    <i className="ri-filter-3-line mr-1" /> Filter
                   </button>
                   <button onClick={() => navigate('/tasks?create=1')} className="px-3 py-1.5 bg-primary text-white rounded-button text-sm whitespace-nowrap">
-                    <i className="ri-add-line mr-1" /> 새 할 일
+                    <i className="ri-add-line mr-1" /> New task
                   </button>
                 </div>
               </div>
 
               <div className="space-y-3">
                 {tasks.length === 0 && (
-                  <div className="text-sm text-gray-500 p-4 bg-gray-50 rounded-lg">표시할 할 일이 없습니다. 새로운 작업을 추가해 보세요.</div>
+                  <div className="text-sm text-gray-500 p-4 bg-gray-50 rounded-lg">No tasks to show. Add a new task.</div>
                 )}
                 {tasks.map((t) => (
                   <div key={String(t.id)} className="border border-gray-200 rounded-lg p-4 hover-lift">
@@ -319,12 +319,12 @@ function DashboardView({ userName }: { userName: string }) {
                       <div className="flex-1">
                         <div className="flex justify-between">
                           <h4 className="font-semibold">{t.title}</h4>
-                          {t.due_date && <span className="text-sm text-gray-500">{new Date(t.due_date).toLocaleDateString("ko-KR", { month: "short", day: "numeric" })}</span>}
+                          {t.due_date && <span className="text-sm text-gray-500">{new Date(t.due_date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span>}
                         </div>
                         {t.description && <p className="text-sm text-gray-600 mt-1">{t.description}</p>}
                         <div className="flex flex-wrap gap-2 mt-2">
                           {t.category && <span className="px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded-full">{t.category}</span>}
-                          {typeof t.duration_min === "number" && <span className="px-2 py-0.5 bg-gray-100 text-gray-800 text-xs rounded-full">{t.duration_min} 분</span>}
+                          {typeof t.duration_min === "number" && <span className="px-2 py-0.5 bg-gray-100 text-gray-800 text-xs rounded-full">{t.duration_min} min</span>}
                           {t.priority && <span className={`px-2 py-0.5 text-xs rounded-full ${t.priority === "high" ? "bg-red-100 text-red-800" : t.priority === "medium" ? "bg-yellow-100 text-yellow-800" : "bg-green-100 text-green-800"}`}>{t.priority}</span>}
                         </div>
                       </div>
@@ -334,25 +334,25 @@ function DashboardView({ userName }: { userName: string }) {
               </div>
 
               <div className="mt-4 text-center">
-                <button onClick={() => navigate('/tasks')} className="text-primary font-medium whitespace-nowrap">모든 할 일 보기</button>
+                <button onClick={() => navigate('/tasks')} className="text-primary font-medium whitespace-nowrap">See all tasks</button>
               </div>
             </div>
 
             <div className="bg-white rounded-lg shadow-sm p-6 animate-fade-in" style={{ animationDelay: "0.2s" }}>
-              <h3 className="text-lg font-bold mb-6">AI 도우미</h3>
+              <h3 className="text-lg font-bold mb-6">AI Assistant</h3>
 
               <div className="border-b border-gray-200 pb-4 mb-4">
-                <h4 className="font-semibold text-sm text-gray-600 mb-3">일정 인사이트</h4>
+                <h4 className="font-semibold text-sm text-gray-600 mb-3">Schedule insights</h4>
                 <div className="space-y-3">
                   <div className="flex items-start space-x-3">
                     <div className="w-8 h-8 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 flex-shrink-0">
                       <i className="ri-lightbulb-line" />
                     </div>
                     <div>
-                      <p className="text-sm">오전 시간대에 집중력이 가장 높습니다. 내일 오전 9시에 수학 연습을 옮겨보세요.</p>
+                      <p className="text-sm">You focus best in the morning. Move math practice to 9 AM tomorrow.</p>
                       <div className="mt-1 flex space-x-2">
-                        <button onClick={() => navigate('/calendar?create=1')} className="px-2 py-1 bg-blue-500 text-white rounded-button text-xs whitespace-nowrap">적용</button>
-                        <button className="px-2 py-1 bg-white border border-gray-300 text-gray-700 rounded-button text-xs whitespace-nowrap">무시</button>
+                        <button onClick={() => navigate('/calendar?create=1')} className="px-2 py-1 bg-blue-500 text-white rounded-button text-xs whitespace-nowrap">Apply</button>
+                        <button className="px-2 py-1 bg-white border border-gray-300 text-gray-700 rounded-button text-xs whitespace-nowrap">Dismiss</button>
                       </div>
                     </div>
                   </div>
@@ -361,9 +361,9 @@ function DashboardView({ userName }: { userName: string }) {
                       <i className="ri-error-warning-line" />
                     </div>
                     <div>
-                      <p className="text-sm">내일 16:00 축구 연습과 16:30 수학 학원 일정이 겹칩니다.</p>
+                      <p className="text-sm">Soccer practice at 4:00 PM overlaps with math academy at 4:30 PM tomorrow.</p>
                       <div className="mt-1 flex space-x-2">
-                        <button onClick={() => navigate('/calendar?view=day')} className="px-2 py-1 bg-yellow-500 text-white rounded-button text-xs whitespace-nowrap">해결</button>
+                        <button onClick={() => navigate('/calendar?view=day')} className="px-2 py-1 bg-yellow-500 text-white rounded-button text-xs whitespace-nowrap">Resolve</button>
                       </div>
                     </div>
                   </div>
@@ -371,16 +371,16 @@ function DashboardView({ userName }: { userName: string }) {
               </div>
 
               <div className="border-b border-gray-200 pb-4 mb-4">
-                <h4 className="font-semibold text-sm text-gray-600 mb-3">웰빙 체크</h4>
+                <h4 className="font-semibold text-sm text-gray-600 mb-3">Wellness check</h4>
                 <div className="space-y-3">
                   <div className="flex items-start space-x-3">
                     <div className="w-8 h-8 flex items-center justify-center rounded-full bg-green-100 text-green-600 flex-shrink-0">
                       <i className="ri-mental-health-line" />
                     </div>
                     <div>
-                      <p className="text-sm">오늘 4시간 이상 공부했어요. 30분 휴식을 권장합니다.</p>
+                      <p className="text-sm">You've studied over 4 hours today. Take a 30-minute break.</p>
                       <div className="mt-1 flex space-x-2">
-                        <button onClick={() => navigate('/calendar?create=1')} className="px-2 py-1 bg-green-500 text-white rounded-button text-xs whitespace-nowrap">휴식 예약</button>
+                        <button onClick={() => navigate('/calendar?create=1')} className="px-2 py-1 bg-green-500 text-white rounded-button text-xs whitespace-nowrap">Schedule a break</button>
                       </div>
                     </div>
                   </div>
@@ -389,14 +389,14 @@ function DashboardView({ userName }: { userName: string }) {
                       <i className="ri-zzz-line" />
                     </div>
                     <div>
-                      <p className="text-sm">수면 패턴이 불규칙합니다. 밤 10시 전후로 일정한 취침 시간을 유지해 보세요.</p>
+                      <p className="text-sm">Your sleep is irregular. Try a consistent bedtime around 10 PM.</p>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div>
-                <h4 className="font-semibold text-sm text-gray-600 mb-3">도우미와 채팅</h4>
+                <h4 className="font-semibold text-sm text-gray-600 mb-3">Chat with assistant</h4>
                 <div className="bg-gray-50 rounded-lg p-4 mb-4 max-h-40 overflow-y-auto" style={{ scrollBehavior: "smooth" }}>
                   <div className="flex flex-col space-y-3">
                     {chat.map((m, i) => (
@@ -418,7 +418,7 @@ function DashboardView({ userName }: { userName: string }) {
                   </div>
                 </div>
                 <div className="flex">
-                  <input value={chatInput} onChange={(e) => setChatInput(e.target.value)} placeholder="도우미에게 물어보세요..." className="flex-1 border border-gray-300 rounded-l-button py-2 px-4 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" />
+                  <input value={chatInput} onChange={(e) => setChatInput(e.target.value)} placeholder="Ask the assistant..." className="flex-1 border border-gray-300 rounded-l-button py-2 px-4 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" />
                   <button onClick={sendMessage} disabled={!chatInput.trim() || sending} className="bg-primary text-white px-4 py-2 rounded-r-button disabled:opacity-50 disabled:cursor-not-allowed">
                     <i className="ri-send-plane-fill" />
                   </button>
@@ -434,7 +434,7 @@ function DashboardView({ userName }: { userName: string }) {
 export default function Index() {
   const [sessionChecked, setSessionChecked] = useState(false);
   const [signedIn, setSignedIn] = useState(false);
-  const [userName, setUserName] = useState("사용자");
+  const [userName, setUserName] = useState("User");
 
   useEffect(() => {
     let mounted = true;
@@ -448,11 +448,11 @@ export default function Index() {
       if (!mounted) return;
       const sess = data.session;
       setSignedIn(!!sess);
-      setUserName((sess?.user?.user_metadata as any)?.full_name || sess?.user?.email?.split("@")[0] || "사용자");
+      setUserName((sess?.user?.user_metadata as any)?.full_name || sess?.user?.email?.split("@")[0] || "User");
       supabase.auth.onAuthStateChange((_e, s) => {
         setSignedIn(!!s);
         if (s?.user) {
-          setUserName((s.user.user_metadata as any)?.full_name || s.user.email?.split("@")[0] || "사용자");
+          setUserName((s.user.user_metadata as any)?.full_name || s.user.email?.split("@")[0] || "User");
         }
       });
       setSessionChecked(true);
