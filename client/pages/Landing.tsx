@@ -3,34 +3,10 @@ import { useNavigate } from "react-router-dom";
 
 export default function Landing() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [toast, setToast] = useState<string | null>(null);
   const [fbOpen, setFbOpen] = useState(false);
   const [fbEmail, setFbEmail] = useState("");
   const [fbMsg, setFbMsg] = useState("");
   const [fbSending, setFbSending] = useState(false);
-
-  async function submitEarlyAccess(e: React.FormEvent) {
-    e.preventDefault();
-    if (!email) return;
-    setLoading(true);
-    try {
-      const res = await fetch("/api/early-access", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email }) });
-      const data = await res.json();
-      if (data?.ok) {
-        setToast("You're on the list! We'll be in touch soon.");
-        setEmail("");
-      } else {
-        setToast("Something went wrong. Please try again later.");
-      }
-    } catch {
-      setToast("Something went wrong. Please try again later.");
-    } finally {
-      setLoading(false);
-      setTimeout(() => setToast(null), 3000);
-    }
-  }
 
   async function submitFeedback(e: React.FormEvent) {
     e.preventDefault();
@@ -41,10 +17,8 @@ export default function Landing() {
       setFbMsg("");
       setFbEmail("");
       setFbOpen(false);
-      setToast("Thanks for the feedback!");
     } finally {
       setFbSending(false);
-      setTimeout(() => setToast(null), 3000);
     }
   }
 
@@ -68,12 +42,10 @@ export default function Landing() {
           <div>
             <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-4">The simplest way to run your family schedule</h1>
             <p className="text-gray-600 mb-6">Plan events, assign tasks, and get smart insights — all in one place. Built for busy families who want less chaos and more calm.</p>
-            <form onSubmit={submitEarlyAccess} className="flex max-w-md">
-              <input type="email" required placeholder="Enter your email" value={email} onChange={(e) => setEmail(e.target.value)} className="flex-1 border border-gray-300 rounded-l-button py-2 px-4 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" />
-              <button type="submit" disabled={loading} className="bg-primary text-white px-4 py-2 rounded-r-button disabled:opacity-50">{loading ? "Joining..." : "Get early access"}</button>
-            </form>
-            <p className="text-xs text-gray-500 mt-2">No spam. We'll only email you about the launch.</p>
-            {toast && <div className="mt-3 text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-2 inline-block">{toast}</div>}
+            <div className="flex gap-3">
+              <button onClick={() => navigate("/app")} className="bg-primary text-white px-4 py-2 rounded-button">Open App</button>
+              <a href="#features" className="px-4 py-2 rounded-button border border-gray-300 text-gray-800">Explore features</a>
+            </div>
           </div>
           <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
             <div className="grid grid-cols-2 gap-3 text-sm">
