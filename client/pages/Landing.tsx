@@ -87,6 +87,42 @@ export default function Landing() {
           </div>
         </section>
 
+        <section id="pricing" className="py-12">
+          <h3 className="text-xl font-semibold mb-6">Plans</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white border border-gray-200 rounded-xl p-6 animate-fade-in" style={{animationDelay:'0.02s'}}>
+              <div className="text-sm font-semibold text-primary mb-1">Free</div>
+              <div className="text-2xl font-bold mb-2">$0<span className="text-sm font-normal text-gray-500">/mo</span></div>
+              <ul className="text-sm text-gray-600 space-y-1 mb-4">
+                <li>• Calendar and tasks</li>
+                <li>• Family chat</li>
+                <li>• Basic AI assistant</li>
+              </ul>
+              <button onClick={()=>navigate('/app')} className="w-full bg-gray-900 text-white rounded-button py-2">Start free</button>
+            </div>
+            <div className="bg-white border-2 border-primary rounded-xl p-6 shadow-sm animate-fade-in" style={{animationDelay:'0.06s'}}>
+              <div className="text-sm font-semibold text-primary mb-1">Pro</div>
+              <div className="text-2xl font-bold mb-2">$7<span className="text-sm font-normal text-gray-500">/mo</span></div>
+              <ul className="text-sm text-gray-600 space-y-1 mb-4">
+                <li>• Everything in Free</li>
+                <li>• Advanced AI summaries</li>
+                <li>• Priority support</li>
+              </ul>
+              <button onClick={()=>navigate('/profile?plan=pro')} className="w-full bg-primary text-white rounded-button py-2">Choose Pro</button>
+            </div>
+            <div className="bg-white border border-gray-200 rounded-xl p-6 animate-fade-in" style={{animationDelay:'0.1s'}}>
+              <div className="text-sm font-semibold text-primary mb-1">Founder (lifetime)</div>
+              <div className="text-2xl font-bold mb-2">$49<span className="text-sm font-normal text-gray-500"> one-time</span></div>
+              <ul className="text-sm text-gray-600 space-y-1 mb-4">
+                <li>• All Pro features</li>
+                <li>• Founder badge</li>
+                <li>• Private roadmap access</li>
+              </ul>
+              <button onClick={()=>navigate('/profile?plan=founder')} className="w-full border border-primary text-primary rounded-button py-2">Get Founder tier</button>
+            </div>
+          </div>
+        </section>
+
         <section id="roadmap" className="py-12">
           <h3 className="text-xl font-semibold mb-4">What's next</h3>
           <ul className="list-disc pl-5 space-y-2 text-gray-700">
