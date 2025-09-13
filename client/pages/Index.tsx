@@ -265,9 +265,16 @@ export default function Index() {
       const { data } = await supabase.auth.getSession(); if (!mounted) return;
       const sess = data.session; setSignedIn(!!sess);
       setUserName((sess?.user?.user_metadata as any)?.full_name || sess?.user?.email?.split("@")[0] || "User");
-      supabase.auth.onAuthStateChange((_e, s) => { setSignedIn(!!s); if (s?.user) { setUserName((s.user.user_metadata as any)?.full_name || s.user.email?.split("@")[0] || "User"); } });
+      const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => {
+        const nextSigned = !!s;
+        setSignedIn((prev) => (prev === nextSigned ? prev : nextSigned));
+        if (s?.user) {
+          const nextName = (s.user.user_metadata as any)?.full_name || s.user.email?.split("@")[0] || "User";
+          setUserName((prev) => (prev === nextName ? prev : nextName));
+        }
+      });
       setSessionChecked(true);
-    } init(); return () => { mounted = false; };
+    } init(); return () => { mounted = false; try { (sub as any)?.subscription?.unsubscribe?.(); } catch {} };
   }, []);
   if (!sessionChecked) return null;
   return signedIn ? <DashboardView userName={userName} /> : <AuthView onSignedIn={() => setSignedIn(true)} />;
