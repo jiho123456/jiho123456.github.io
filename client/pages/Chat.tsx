@@ -41,7 +41,8 @@ export default function Chat() {
 
   useEffect(() => {
     if (!supabase) return;
-    async function load() {
+    let cleanup: (() => void) | undefined;
+    (async () => {
       const { data } = await supabase.from("messages").select("*").eq("channel", "family").order("created_at", { ascending: true }).limit(200);
       setFamilyChat((data as FamilyMsg[]) ?? []);
       const ch = supabase
@@ -51,10 +52,9 @@ export default function Chat() {
           requestAnimationFrame(()=>{ familyBoxRef.current?.scrollTo({ top: familyBoxRef.current.scrollHeight, behavior: "smooth" }); });
         })
         .subscribe();
-      return () => { void supabase.removeChannel(ch); };
-    }
-    const unsubPromise = load();
-    return () => { void unsubPromise; };
+      cleanup = () => { void supabase.removeChannel(ch); };
+    })();
+    return () => { if (cleanup) cleanup(); };
   }, []);
 
   async function sendFamily() {
