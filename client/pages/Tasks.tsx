@@ -67,7 +67,7 @@ export default function Tasks() {
   useEffect(() => { supabase?.auth.getUser().then((u) => setUserName((u.data.user?.user_metadata as any)?.full_name || u.data.user?.email?.split("@")[0] || "User")); }, []);
 
   const qc = useQueryClient();
-  const { data, isLoading } = useQuery({ queryKey: ["tasks"], queryFn: async () => (await (await fetch("/api/tasks")).json()) as TasksResponse });
+  const { data, isLoading } = useQuery({ queryKey: ["tasks"], queryFn: async () => await (await import('@/lib/api')).apiGet<TasksResponse>('/api/tasks', { tasks: [] }) });
   const tasks: TaskItem[] = data?.tasks ?? [];
 
   const [modal, setModal] = useState<{ open: boolean; initial?: Partial<TaskItem> }>({ open: false });
