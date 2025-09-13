@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { EventsResponse, EventItem } from "@shared/api";
 import { supabase } from "@/lib/supabase";
+import { apiGet } from "@/lib/api";
 import {
   addDays,
   addMonths,
@@ -101,7 +102,7 @@ export default function Calendar() {
     else { return { from: startOfWeek(cursor), to: endOfWeek(cursor) }; }
   }, [view, cursor]);
 
-  const { data } = useQuery({ queryKey: ["events", view, range.from.toISOString(), range.to.toISOString()], queryFn: async () => (await (await fetch(`/api/events?from=${range.from.toISOString()}&to=${range.to.toISOString()}`)).json()) as EventsResponse });
+  const { data } = useQuery({ queryKey: ["events", view, range.from.toISOString(), range.to.toISOString()], queryFn: async () => await apiGet<EventsResponse>(`/api/events?from=${range.from.toISOString()}&to=${range.to.toISOString()}`, { events: [] }) });
   const events: EventItem[] = (data?.events ?? []).map((e) => ({ ...e, start_time: e.start_time ?? undefined, end_time: e.end_time ?? undefined }));
 
   const createMut = useMutation({ mutationFn: async (payload: Partial<EventItem>) => (await (await fetch("/api/events", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) })).json()), onSuccess: () => qc.invalidateQueries({ queryKey: ["events"] }) });
