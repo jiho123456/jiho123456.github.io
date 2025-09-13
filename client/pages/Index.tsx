@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
+import { apiGet } from "@/lib/api";
 import AppShell from "@/components/AppShell";
 import { useNavigate } from "react-router-dom";
 import type { EventsResponse, EventItem, TasksResponse, TaskItem } from "@shared/api";
@@ -133,8 +134,8 @@ function DashboardView({ userName }: { userName: string }) {
   const navigate = useNavigate();
   const qc = useQueryClient();
 
-  const { data: eventsData } = useQuery({ queryKey: ["events"], queryFn: async () => (await (await fetch("/api/events")).json()) as EventsResponse });
-  const { data: tasksData } = useQuery({ queryKey: ["tasks"], queryFn: async () => (await (await fetch("/api/tasks")).json()) as TasksResponse });
+  const { data: eventsData } = useQuery({ queryKey: ["events"], queryFn: async () => await apiGet<EventsResponse>('/api/events', { events: [] }) });
+  const { data: tasksData } = useQuery({ queryKey: ["tasks"], queryFn: async () => await apiGet<TasksResponse>('/api/tasks', { tasks: [] }) });
   const events = (eventsData?.events ?? []) as EventItem[];
   const tasks = (tasksData?.tasks ?? []) as TaskItem[];
 
