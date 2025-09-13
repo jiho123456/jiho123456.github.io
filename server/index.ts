@@ -15,10 +15,25 @@ export function createServer() {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
+  // Simple request logger for debugging
+  app.use((req, _res, next) => {
+    // keep logs concise
+    // eslint-disable-next-line no-console
+    console.log(`[api] ${req.method} ${req.url}`);
+    next();
+  });
+
   // Example API routes
   app.get("/api/ping", (_req, res) => {
     const ping = process.env.PING_MESSAGE ?? "ping";
     res.json({ message: ping });
+  });
+
+  // Global error handler to surface server errors
+  app.use((err: any, _req: any, res: any, _next: any) => {
+    // eslint-disable-next-line no-console
+    console.error('[api] error:', err && err.stack ? err.stack : err);
+    res.status(500).json({ error: 'server_error' });
   });
 
   app.get("/api/demo", handleDemo);
