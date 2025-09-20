@@ -67,5 +67,41 @@
     "roadmap2": "초기 후원자를 위한 파운더 영구 플랜",
     "roadmap3": "초기 사용자 피드백용 디스코드",
     "roadmap4": "베타리스트 제출"
+  },
+  "index": {
+    "authSubtitle": "가족 일정을 더 똑똑하게 관리하세요",
+    "tabs": { "login": "로그인", "signup": "회원가입" },
+    "fields": {
+      "name": "이름",
+      "email": "이메일",
+      "password": "비밀번호",
+      "confirmPassword": "비밀번호 확인"
+    },
+    "buttons": { "login": "로그인", "signup": "회원가입", "processing": "처리 중..." },
+    "errors": {
+      "supaNotConfigured": "Supabase가 구성되지 않았습니다. VITE_SUPABASE_URL 및 VITE_SUPABASE_ANON_KEY를 설정해주세요.",
+      "passwordsDontMatch": "비밀번호가 일치하지 않습니다.",
+      "enterEmail": "이메일을 입력하세요",
+      "supaConfigRequired": "Supabase 설정이 필요합니다"
+    },
+    "messages": {
+      "accountCreated": "계정이 생성되었습니다! 이메일을 확인해주세요.",
+      "loggedIn": "성공적으로 로그인했습니다!",
+      "resetEmailSent": "비밀번호 재설정 이메일이 전송되었습니다.",
+      "troubleNow": "현재 문제가 발생했습니다. 잠시 후 다시 시도해주세요."
+    },
+    "forgotPassword": "비밀번호를 잊으셨나요?"
+  },
+  "dashboard": {
+    "hello": "안녕하세요, {name}님!",
+    "feeling": "오늘 기분은 어떠세요?",
+    "energy": "에너지 레벨",
+    "schedule": "일정",
+    "view": { "day": "일", "week": "주", "month": "월" },
+    "today": "오늘",
+    "addEvent": "일정 추가",
+    "noEvents": "표시할 일정이 없습니다. 하나 추가해보세요!",
+    "chatWithAssistant": "도우미와 채팅",
+    "askAssistant": "도우미에게 질문..."
   }
 }
