@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
+import { installErrorGuard } from "@/lib/error-guard";
 import Landing from "./pages/Landing";
 import NotFound from "./pages/NotFound";
 import Calendar from "./pages/Calendar";
