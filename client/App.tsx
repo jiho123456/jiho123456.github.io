@@ -18,6 +18,8 @@ import { I18nProvider } from "@/lib/i18n";
 
 const queryClient = new QueryClient();
 
+installErrorGuard();
+
 const App = () => (
   <I18nProvider>
     <QueryClientProvider client={queryClient}>
