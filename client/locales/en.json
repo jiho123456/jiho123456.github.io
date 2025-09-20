@@ -77,7 +77,11 @@
       "password": "Password",
       "confirmPassword": "Confirm password"
     },
-    "buttons": { "login": "Log in", "signup": "Sign up", "processing": "Processing..." },
+    "buttons": {
+      "login": "Log in",
+      "signup": "Sign up",
+      "processing": "Processing..."
+    },
     "errors": {
       "supaNotConfigured": "Supabase is not configured. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.",
       "passwordsDontMatch": "Passwords do not match.",

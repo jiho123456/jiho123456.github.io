@@ -77,7 +77,11 @@
       "password": "비밀번호",
       "confirmPassword": "비밀번호 확인"
     },
-    "buttons": { "login": "로그인", "signup": "회원가입", "processing": "처리 중..." },
+    "buttons": {
+      "login": "로그인",
+      "signup": "회원가입",
+      "processing": "처리 중..."
+    },
     "errors": {
       "supaNotConfigured": "Supabase가 구성되지 않았습니다. VITE_SUPABASE_URL 및 VITE_SUPABASE_ANON_KEY를 설정해주세요.",
       "passwordsDontMatch": "비밀번호가 일치하지 않습니다.",
